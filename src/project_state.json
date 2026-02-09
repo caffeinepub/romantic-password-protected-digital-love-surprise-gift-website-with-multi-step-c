@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Build a fully functional romantic digital surprise gift website with a password-protected entry (special date), a multi-step creation flow for user-generated content, interactive animated sections (hero, flip-photo gallery with notes, love letter, quiz, hidden messages, final hearts/ending screen), and generation of a private shareable link.",
+  "architectural_notes": [
+    "All displayed content must be user-generated; do not ship with pre-filled demo content.",
+    "Use special date (DDMMYYYY) as the gift page password for the entry screen.",
+    "Provide a unique private shareable link per created gift.",
+    "Mobile-first responsive UI with smooth transitions/animations; prioritize fast loading and SEO-friendly structure."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Subtle seamless heart pattern background (romantic-heart-pattern.dim_2048x2048.png)\n- Elegant minimal heart mark icon (heart-mark.dim_256x256.png)\n- Favicon heart icon (favicon-heart.dim_64x64.png)",
+  "existing_features": [
+    {
+      "id": "feature-create-a-multi-step-mobile-first-gift-creator-flow-in-the-frontend-that-collects-all-user-generated-content-with-smooth-transitions-between-steps-1-partner-name-sender-name-email-special-date-ddmmyyyy-2-upload-banner-image-upload-multiple-photos-and-enter-a-personal-note-for-each-photo-3-write-the-love-message-4-write-the-ending-message-5-live-preview-of-the-final-gift-page-6-generate-a-unique-private-shareable-link",
+      "title": "Create a multi-step, mobile-first “Gift Creator” flow in the frontend that collects all user-generated content with smooth transitions between steps: (1) partner name, sender name, email, special date (DDMMYYYY), (2) upload banner image + upload multiple photos and enter a personal note for each photo, (3) write the love message, (4) write the ending message, (5) live preview of the final gift page, (6) generate a unique private shareable link.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-store-uploaded-images-in-the-frontend-as-user-provided-assets-no-demo-images-and-ensure-fast-loading-by-generating-and-using-appropriately-sized-previews-thumbnails-for-the-gallery-while-keeping-originals-available-for-high-quality-viewing",
+      "title": "Store uploaded images in the frontend as user-provided assets (no demo images) and ensure fast loading by generating and using appropriately sized previews/thumbnails for the gallery while keeping originals available for high-quality viewing.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-shareable-gift-experience-route-in-the-frontend-e-g-gift-giftid-that-starts-with-a-password-entry-screen-on-correct-password-transition-smoothly-into-the-main-gift-page-with-soft-romantic-animations-on-incorrect-password-show-a-clear-english-error-and-allow-retry",
+      "title": "Implement the shareable gift experience route in the frontend (e.g., /gift/:giftId) that starts with a password entry screen; on correct password, transition smoothly into the main gift page with soft romantic animations; on incorrect password, show a clear English error and allow retry.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-the-main-gift-page-sections-and-interactions-using-the-creator-s-content-hero-banner-with-animated-for-partner-name-and-from-sender-name-text-flip-photo-gallery-3d-flip-on-click-back-shows-note-love-letter-section-with-typing-or-fade-in-animation-memory-quiz-section-with-creator-defined-relationship-questions-surprise-hidden-messages-that-reveal-on-click-final-romantic-message-section-with-floating-hearts-animation-and-an-ending-last-screen-message-with-soft-fade-out-and-floating-hearts",
+      "title": "Build the main gift page sections and interactions using the creator’s content: hero banner with animated “For [Partner Name]” and “From [Sender Name]” text, flip-photo gallery (3D flip on click, back shows note), love letter section with typing or fade-in animation, memory/quiz section with creator-defined relationship questions, surprise/hidden messages that reveal on click, final romantic message section with floating hearts animation, and an ending last-screen message with soft fade-out and floating hearts.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-creator-inputs-for-the-memory-quiz-content-and-for-surprise-notes-hidden-messages-as-part-of-the-creation-flow-ensuring-all-displayed-quiz-questions-and-hidden-messages-are-user-generated-no-pre-filled-questions",
+      "title": "Add creator inputs for the “Memory / quiz” content and for “Surprise notes / hidden messages” as part of the creation flow, ensuring all displayed quiz questions and hidden messages are user-generated (no pre-filled questions).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-consistent-modern-romantic-visual-theme-across-the-entire-app-soft-pink-red-white-palette-premium-spacing-elegant-cursive-paired-with-a-modern-readable-font-and-smooth-fade-slide-heart-float-animations-ensure-the-ui-is-mobile-first-responsive-and-uses-modern-ui-components",
+      "title": "Apply a consistent, modern romantic visual theme across the entire app: soft pink/red/white palette, premium spacing, elegant cursive paired with a modern readable font, and smooth fade/slide/heart-float animations; ensure the UI is mobile-first responsive and uses modern UI components.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-frontend-seo-friendly-and-fast-loading-within-the-constraints-of-a-react-spa-by-setting-appropriate-document-titles-descriptions-for-the-creator-flow-and-for-gift-pages-based-on-partner-sender-names-and-by-minimizing-unnecessary-asset-loading-before-password-unlock",
+      "title": "Make the frontend SEO-friendly and fast-loading within the constraints of a React SPA by setting appropriate document titles/descriptions for the creator flow and for gift pages (based on partner/sender names), and by minimizing unnecessary asset loading before password unlock.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-include-required-static-romantic-visual-assets-used-purely-for-visuals-in-frontend-public-assets-generated-and-render-them-in-the-ui-e-g-subtle-background-pattern-decorative-hearts-favicon-without-routing-these-assets-through-the-backend",
+      "title": "Generate and include required static romantic visual assets (used purely for visuals) in frontend/public/assets/generated and render them in the UI (e.g., subtle background pattern, decorative hearts, favicon) without routing these assets through the backend.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Password-protected entry screen using special date (DDMMYYYY) with smooth transition into the main page",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Multi-step gift creation flow (names/email/date, upload banner + multiple photos with per-photo notes, love message, ending message, live preview)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Generate a unique private shareable link for the created gift page",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Main gift page sections: hero banner with animated “For [Partner]” and “From [Sender]” text",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Photo gallery with separate photos, per-photo notes, and click-to-flip smooth 3D animation showing notes on back",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Love letter section with typing or fade-in animation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Memory/quiz section with relationship questions",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Surprise notes/hidden messages that reveal on click",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Final romantic message + hearts animation and an ending last-screen custom message with fade-out + floating hearts",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Design/UX requirements: premium romantic style (pink/red/white palette, cursive+modern fonts), smooth fade/slide/heart-float animations, mobile-first responsive, fast loading, SEO-friendly, no pre-filled demo content (all user-generated)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Implement backend persistence for user-created “gift pages” in a single Motoko actor, including creation, retrieval, and password validation based on a special date in DDMMYYYY format, and returning only the minimum data needed to render the gift page.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Romantic password-protected digital love surprise gift website with multi-step creator flow and shareable private links",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

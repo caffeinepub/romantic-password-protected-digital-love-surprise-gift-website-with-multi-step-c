@@ -1,0 +1,150 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-09T10:09:37.561Z",
+  "summary": "Diff adds a new Motoko backend actor plus a React SPA with a multi-step gift creator wizard, gift unlock flow components, and several gift-page UI sections. However, core requirements around backend data model/persistence, password validation/content gating, SEO titles, required static assets usage, and “no demo content” are not fully met; the diff also introduces unrequested footer branding/linking.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Backend persistence for complete gift page records (partner name, sender name, email, special date DDMMYYYY password, banner image reference, photos+notes, love/ending messages, quiz items, hidden messages) with password validation and gated retrieval; non-guessable giftId; no demo/default content.",
+      "reason": "Backend GiftPage type and save API do not include most required fields (names, email, special date as password, messages, quiz, hidden messages, photo notes). No method exists to validate password for a giftId and prevent gift content retrieval unless correct. GiftId generation appears guessable (caller principal + timestamp). Also Map-based storage shown is not stable persistence across upgrades (no stable var shown).",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Multi-step creator flow includes steps for love message, ending message, live preview, and final share link generation by calling backend create-gift API and returning copyable share link.",
+      "reason": "Wizard steps exist and Step5 calls a hook, but the backend API shown is saveGiftPage(tldr, mainTitle, mainBlob, dateHint, collagePositions) and does not accept the full formData; the diff does not show the create-gift hook implementation or any adapter encoding all required fields to backend. Step count is 5, while request specifies 6 distinct steps (ending message is merged into a tab rather than its own step).",
+      "evidence": [
+        "frontend/src/components/gift-creator/GiftCreatorWizard.tsx",
+        "frontend/src/components/gift-creator/steps/Step3Content.tsx",
+        "frontend/src/components/gift-creator/steps/Step5GenerateLink.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Generate and use optimized thumbnails/previews for gallery while keeping originals available for high-quality viewing; clicking uses higher-quality source without blocking render.",
+      "reason": "Step2Images calls processImage and stores a preview URL from the original file, but the diff does not show thumbnail generation being used for initial gallery load vs originals retained for high-quality viewing, nor any click-to-open higher-quality viewer behavior on the gift page gallery.",
+      "evidence": [
+        "frontend/src/components/gift-creator/steps/Step2Images.tsx",
+        "frontend/src/components/gift/PhotoFlipGallery.tsx"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Shareable /gift/:giftId route that starts with password entry; verifies DDMMYYYY; on incorrect shows error without revealing gift data; on correct transitions into gift page; refresh requires re-entry (no password in URL).",
+      "reason": "Routing points /gift/$giftId to GiftUnlockPage, and PasswordGate exists, but the diff does not include GiftUnlockPage implementation or any backend password verification call. Backend getGiftPage is a public query returning full GiftPage without any password check, which conflicts with gated access.",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/gift/PasswordGate.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Main gift page includes hero banner animation, 3D flip photo cards with notes, love letter typing/fade animation, memory quiz with reveal interaction, hidden messages reveal on click, final romantic section with floating hearts animation, and ending last-screen fade-out with floating hearts overlay/background.",
+      "reason": "Several sections exist (HeroBanner, PhotoFlipGallery, LoveLetter typing, MemoryQuiz reveal, HiddenMessages reveal, FloatingHearts). But the ending experience does not show a last-screen soft fade-out sequence; EndingScreen only fades/scales in. Floating hearts overlay is global, but no explicit final fade-out/last-screen transition is shown.",
+      "evidence": [
+        "frontend/src/components/gift/EndingScreen.tsx",
+        "frontend/src/components/gift/FloatingHearts.tsx",
+        "frontend/src/components/gift/GiftPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Consistent romantic theme with smooth animations and respect reduced-motion preference across animations.",
+      "reason": "Reduced-motion is respected in FloatingHearts only; other animations (typing interval, hero entrance transitions, flip animations implied by CSS classes) do not show reduced-motion handling in the diff.",
+      "evidence": [
+        "frontend/src/components/gift/FloatingHearts.tsx",
+        "frontend/src/components/gift/LoveLetter.tsx",
+        "frontend/src/components/gift/HeroBanner.tsx",
+        "frontend/src/components/gift/PhotoFlipGallery.tsx"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "SEO-friendly titles/descriptions: creator flow title; gift page title includes “For [Partner Name]” after unlock (or neutral before unlock); minimize asset loading before unlock.",
+      "reason": "No document title/description handling is shown. Also, backend getGiftPage returns full blob data via query with no gating shown, and gift page constructs banner/photo Blob URLs immediately once loaded, but there is no evidence of minimizing asset loading prior to unlock at the route level (GiftUnlockPage is not shown).",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/gift/GiftPage.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "Include required generated static assets under frontend/public/assets/generated (pattern background, heart mark icon, favicon) and reference them directly in frontend.",
+      "reason": "AppLayout references the heart pattern asset path, but the diff does not show the actual assets being added under frontend/public/assets/generated, nor usage of the heart mark icon or favicon.",
+      "evidence": [
+        "frontend/src/components/layout/AppLayout.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Footer branding/link to caffeine.ai (“Built with caffeine.ai”).",
+      "reason": "Not requested and conflicts with the product being a private romantic gift site; also introduces an external promotional link not mentioned in requirements/non-goals.",
+      "evidence": [
+        "frontend/src/components/layout/AppLayout.tsx"
+      ]
+    },
+    {
+      "description": "Backend endpoints for listing gift pages by owner, listing all gift pages, and deleting gift pages.",
+      "reason": "BuildRequest focuses on create/retrieve with password validation for shareable links; owner listing and delete APIs were not requested.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Default/placeholder note text shown on photo flip back: 'A special memory ❤️'.",
+      "reason": "Violates the constraint/AC that no demo/sample/default romance content should appear; empty fields should be absent/blank and all displayed notes should come from creator input.",
+      "evidence": [
+        "frontend/src/components/gift/PhotoFlipGallery.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.78,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/gift-creator/GiftCreatorWizard.tsx",
+    "frontend/src/components/gift-creator/HiddenMessagesEditor.tsx",
+    "frontend/src/components/gift-creator/QuizEditor.tsx",
+    "frontend/src/components/gift-creator/steps/Step1Basics.tsx",
+    "frontend/src/components/gift-creator/steps/Step2Images.tsx",
+    "frontend/src/components/gift-creator/steps/Step3Content.tsx",
+    "frontend/src/components/gift-creator/steps/Step4Preview.tsx",
+    "frontend/src/components/gift-creator/steps/Step5GenerateLink.tsx",
+    "frontend/src/components/gift/EndingScreen.tsx",
+    "frontend/src/components/gift/FloatingHearts.tsx",
+    "frontend/src/components/gift/GiftPage.tsx",
+    "frontend/src/components/gift/HeroBanner.tsx",
+    "frontend/src/components/gift/HiddenMessages.tsx",
+    "frontend/src/components/gift/LoveLetter.tsx",
+    "frontend/src/components/gift/MemoryQuiz.tsx",
+    "frontend/src/components/gift/PasswordGate.tsx",
+    "frontend/src/components/gift/PhotoFlipGallery.tsx",
+    "frontend/src/components/layout/AppLayout.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useDocumentMeta.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/GiftCreatorPage.tsx",
+    "frontend/src/pages/GiftUnlockPage.tsx",
+    "frontend/src/types/gift.ts",
+    "frontend/src/utils/clipboard.ts",
+    "frontend/src/utils/giftDataEncoder.ts",
+    "frontend/src/utils/imageProcessing.ts",
+    "frontend/src/utils/validation.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Romantic love gift SPA (creator flow + password-locked share links)",
+  "requirements": [
+    {
+      "id": "REQ-2",
+      "summary": "Implement a multi-step, mobile-first Gift Creator flow that collects all user content, previews it live, and creates a shareable private link.",
+      "acceptanceCriteria": [
+        "All form steps are accessible in a clear stepper-like flow and animate smoothly between steps (fade/slide).",
+        "Special date input is validated client-side to exactly 8 digits (DDMMYYYY) and shows an English validation error if invalid.",
+        "Banner image upload accepts an image file and shows a preview.",
+        "Multiple photo uploads are supported; each uploaded photo remains a separate item with its own note input bound to that specific photo.",
+        "Live preview renders using only the content the user has entered; if a field is empty, it is simply absent/blank (no placeholder romance text or demo imagery).",
+        "Final step calls the backend to create the gift and returns a shareable link that the user can copy."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app shell with routing for the required creator flow and shareable gift route; wire navigation entry to the Gift Creator. Use shadcn-ui components (e.g., Button, Card, Input, Textarea, Dialog/Sheet) to ensure modern UI components throughout. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/GiftCreatorPage.tsx",
+          "operation": "create",
+          "description": "Implement the Gift Creator page that hosts the multi-step wizard (steps 1–6), including stepper UI, mobile-first layout, and smooth fade/slide transitions between steps. Use shadcn-ui components for form controls and stepper presentation. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/GiftCreatorWizard.tsx",
+          "operation": "create",
+          "description": "Build wizard state management (current step, validation gating, transitions) and orchestrate step components (Partner/Sender/Email/Date, Images+Notes, Love Message, Ending Message, Live Preview, Generate Link). Ensure no demo/default text is ever injected."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/steps/Step1Basics.tsx",
+          "operation": "create",
+          "description": "Create Step 1 collecting partner name, sender name, email, and special date password; include client-side DDMMYYYY validation with clear English errors and step progression gating."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/steps/Step2Images.tsx",
+          "operation": "create",
+          "description": "Create Step 2 handling banner image selection (preview) and multiple photo selection; bind each photo to its own note input (list of items). Use shadcn-ui Input/Textarea where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/steps/Step3LoveMessage.tsx",
+          "operation": "create",
+          "description": "Create Step 3 for the love message input with mobile-friendly textarea and optional character guidance (without placeholders or demo content)."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/steps/Step4EndingMessage.tsx",
+          "operation": "create",
+          "description": "Create Step 4 for the ending message input with mobile-friendly textarea and no prefilled content."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/steps/Step5LivePreview.tsx",
+          "operation": "create",
+          "description": "Create Step 5 live preview that renders the final gift page UI using only current in-memory creator inputs; omit/leave blank any empty fields and do not show demo imagery/text."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/steps/Step6GenerateLink.tsx",
+          "operation": "create",
+          "description": "Create Step 6 that submits the creator data to the backend (via a frontend backend-client wrapper) and renders a copyable share link (e.g., containing giftId). Use shadcn-ui Button and a copy-to-clipboard affordance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/services/giftApi.ts",
+          "operation": "create",
+          "description": "Add a small frontend-only service wrapper that calls available backend capabilities to create a gift and returns the resulting giftId/link; centralize any request/response mapping so UI stays clean. (Do not mention or rely on any backend implementation details beyond the typed interface.)"
+        },
+        {
+          "path": "frontend/src/utils/validation.ts",
+          "operation": "create",
+          "description": "Add shared validators (DDMMYYYY exactly 8 digits, basic email shape) and user-facing English error messages used across the creator flow."
+        },
+        {
+          "path": "frontend/src/utils/clipboard.ts",
+          "operation": "create",
+          "description": "Add a helper for copying the generated share link with a clear success/failure message surfaced in the UI (no toasts with demo text)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Handle user image assets client-side with optimized thumbnails for fast gallery loading while keeping higher-quality sources available.",
+      "acceptanceCriteria": [
+        "Gallery displays optimized thumbnails/previews (generated client-side) to keep initial load fast.",
+        "Clicking a photo uses an available higher-quality source (original or larger preview) without blocking the entire page render.",
+        "No stock/demo images appear anywhere unless the creator uploads them."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useImageVariants.ts",
+          "operation": "create",
+          "description": "Implement a hook that takes user-selected image Files and generates (a) a lightweight thumbnail preview (client-side resize/compress) and (b) a higher-quality object URL for viewing; return both sources plus cleanup (revokeObjectURL)."
+        },
+        {
+          "path": "frontend/src/utils/imageProcessing.ts",
+          "operation": "create",
+          "description": "Add client-side image resize utilities using canvas-based processing to produce thumbnails/previews tuned for mobile-first performance (e.g., bounding box + JPEG/WebP where supported)."
+        },
+        {
+          "path": "frontend/src/components/gift/PhotoFlipGallery.tsx",
+          "operation": "create",
+          "description": "Render the gift photo gallery using thumbnail/previews for initial display; on click/tap, switch to a higher-quality source (original or larger preview) per photo without blocking the rest of the page. Ensure each photo card keeps its own note on the flip back."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/steps/Step2Images.tsx",
+          "operation": "modify",
+          "description": "Integrate thumbnail/high-quality variant generation for banner and gallery photos so the creator flow preview and final gift page can load fast while retaining quality for zoom/view interactions."
+        },
+        {
+          "path": "frontend/src/components/gift/GiftPage.tsx",
+          "operation": "create",
+          "description": "Create a reusable gift page renderer that consumes gift content and uses the gallery thumbnails for initial render, deferring high-quality image usage to intentional interactions (click/open)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement the shareable gift route with password gate and smooth transition into the gift after successful password entry.",
+      "acceptanceCriteria": [
+        "Visiting the shareable link shows a password entry screen first (gift content is not visible behind it).",
+        "Password must be entered in DDMMYYYY format; incorrect attempts show an error message and do not reveal gift data.",
+        "After successful entry, the app transitions into the gift page with a smooth fade/slide/romantic animation sequence.",
+        "Refreshing the page returns to the password entry screen unless the user re-enters the password (no password stored in URL)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/GiftUnlockPage.tsx",
+          "operation": "create",
+          "description": "Create the /gift/:giftId route page that shows a password entry gate first; on submit, call the backend verification/fetch capability through a frontend service wrapper and only then render the gift content with smooth romantic transitions."
+        },
+        {
+          "path": "frontend/src/components/gift/PasswordGate.tsx",
+          "operation": "create",
+          "description": "Implement the password entry UI (DDMMYYYY validation, English error for invalid/incorrect password, retry support). Use shadcn-ui Input/Button/Card for a modern look. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/services/giftApi.ts",
+          "operation": "modify",
+          "description": "Add methods for password validation and fetching the minimum gift data required to render after unlock; ensure the UI does not attempt to fetch/render gift content until after successful password submission."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the shareable route (/gift/:giftId) to GiftUnlockPage and ensure it is reachable via the generated share link flow (and any in-app navigation that is required)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Build the main gift page sections and romantic interactions/animations using only creator-provided content.",
+      "acceptanceCriteria": [
+        "Hero section displays the uploaded banner image and animates the “For [Partner Name]” and “From [Sender Name]” text in a romantic, premium style.",
+        "Photo gallery shows each uploaded photo as its own card; clicking/tapping triggers a smooth 3D flip animation; the back side shows that photo’s personal note.",
+        "Love letter section animates the long message (typing effect or staged fade-in) without layout jank on mobile.",
+        "Memory/quiz section renders creator-defined questions (and, if provided, answers) with a “reveal” interaction suitable for a surprise gift.",
+        "Surprise/hidden messages are hidden by default and reveal individually on click/tap.",
+        "Final section includes a floating hearts animation; ending message appears as the last screen with a soft fade-out transition and floating hearts overlay/background."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/gift/GiftPage.tsx",
+          "operation": "modify",
+          "description": "Compose the full gift page renderer with the required sections (hero, flip gallery, love letter, quiz, hidden messages, final hearts, ending screen). Ensure all content is driven strictly by provided gift data and that empty fields render as absent/blank."
+        },
+        {
+          "path": "frontend/src/components/gift/HeroBanner.tsx",
+          "operation": "create",
+          "description": "Implement the hero section using the uploaded banner image, plus animated “For [Partner Name]” / “From [Sender Name]” text with romantic premium styling."
+        },
+        {
+          "path": "frontend/src/components/gift/LoveLetter.tsx",
+          "operation": "create",
+          "description": "Implement the love letter section with typing or staged fade-in animation that remains smooth on mobile and avoids layout jank (e.g., stable container sizing)."
+        },
+        {
+          "path": "frontend/src/components/gift/MemoryQuiz.tsx",
+          "operation": "create",
+          "description": "Implement the memory/quiz section rendering creator-defined questions and optional answers with a reveal interaction (tap-to-reveal) suitable for surprises."
+        },
+        {
+          "path": "frontend/src/components/gift/HiddenMessages.tsx",
+          "operation": "create",
+          "description": "Implement hidden/surprise messages list where each message is hidden by default and reveals individually on click/tap."
+        },
+        {
+          "path": "frontend/src/components/gift/FloatingHearts.tsx",
+          "operation": "create",
+          "description": "Implement a lightweight floating hearts animation overlay component used in the final romantic section and ending screen; respect reduced motion preferences."
+        },
+        {
+          "path": "frontend/src/components/gift/EndingScreen.tsx",
+          "operation": "create",
+          "description": "Implement the last-screen ending message with a soft fade-out transition and floating hearts overlay/background."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Add the core CSS/Tailwind layers plus custom keyframes/classes needed for 3D flip, fade/slide transitions, and heart-float animations while keeping mobile performance in mind (and without introducing demo content)."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend Tailwind theme with romantic animation utilities (fade/slide/float), 3D transform helpers (as needed via utilities/classes), and any additional palette tokens consistent with soft pink/red/white styling."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add creator inputs for quiz items and hidden/surprise messages, fully user-generated with add/edit/remove support.",
+      "acceptanceCriteria": [
+        "Creator can add/edit/remove multiple quiz items (at minimum: question text; optionally: answer text).",
+        "Creator can add/edit/remove multiple hidden/surprise messages.",
+        "Gift preview and final gift page display exactly the creator-entered quiz items and hidden messages; none are pre-populated."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/gift-creator/steps/Step3LoveMessage.tsx",
+          "operation": "modify",
+          "description": "Update the wizard sequencing/content so the creation flow includes quiz and hidden message inputs as required (either embedded in an existing step or as an additional section within the step UI) without adding any pre-filled questions/messages."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/QuizEditor.tsx",
+          "operation": "create",
+          "description": "Create an editor component to add/edit/remove multiple quiz items (question required, answer optional). Use shadcn-ui Input/Textarea/Button and structured Card rows. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/HiddenMessagesEditor.tsx",
+          "operation": "create",
+          "description": "Create an editor component to add/edit/remove multiple hidden/surprise messages. Use shadcn-ui components for consistent modern UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/gift/GiftPage.tsx",
+          "operation": "modify",
+          "description": "Ensure quiz items and hidden messages rendered on the gift page are sourced only from creator-entered data (preview) or unlocked fetched gift data (share link flow), with no defaults."
+        },
+        {
+          "path": "frontend/src/components/gift-creator/steps/Step5LivePreview.tsx",
+          "operation": "modify",
+          "description": "Extend live preview to include the quiz section and hidden message interactions using exactly the current creator-entered items and nothing pre-populated."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Apply a consistent romantic theme (colors, typography, spacing, animations) with mobile-first responsiveness and modern UI components.",
+      "acceptanceCriteria": [
+        "App uses a coherent romantic theme (colors, typography, component styling) consistently across creator flow, password entry, and gift page.",
+        "Animations are smooth on mobile and do not block interactions (e.g., reduced motion preference is respected if available).",
+        "Layouts adapt cleanly to small screens first, then scale up for tablet/desktop.",
+        "No blue/purple-dominant theme is introduced (palette remains pink/red/white as requested)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Define romantic design tokens via CSS variables (soft pink/red/white palette), base typography (elegant cursive paired with readable font), and shared animation classes; ensure reduced-motion variants via prefers-reduced-motion."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust/extend Tailwind theme to support the romantic palette and premium spacing/typography scale; ensure utilities exist for consistent section spacing and mobile-first responsive behavior."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "create",
+          "description": "Create a simple layout wrapper providing consistent page padding/width, romantic background treatment (including decorative generated pattern), and shared header/footer if needed (without adding new top-level routes)."
+        },
+        {
+          "path": "frontend/src/pages/GiftCreatorPage.tsx",
+          "operation": "modify",
+          "description": "Wrap creator flow in the shared AppLayout and apply consistent romantic styling and responsive spacing; ensure step transitions remain smooth on mobile."
+        },
+        {
+          "path": "frontend/src/pages/GiftUnlockPage.tsx",
+          "operation": "modify",
+          "description": "Apply the same romantic theme to the password gate and unlocked gift experience, including consistent typography and spacing."
+        },
+        {
+          "path": "frontend/src/components/gift/PasswordGate.tsx",
+          "operation": "modify",
+          "description": "Style the password entry screen using the romantic theme and modern shadcn-ui primitives; ensure error states are clear and accessible. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Improve SPA SEO/UX and performance via document titles/descriptions and minimizing loading before password unlock.",
+      "acceptanceCriteria": [
+        "Creator flow has a sensible English document title (e.g., “Create Your Surprise Gift”).",
+        "Gift page sets an English document title that includes “For [Partner Name]” after unlock (or a neutral title before unlock).",
+        "Gift content/images are not eagerly rendered/downloaded at full size before successful password entry (to keep entry fast and reduce accidental exposure)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Update base HTML metadata for a sensible default title/description; ensure favicon wiring will reference the generated favicon asset under frontend/public/assets/generated/favicon-heart.dim_64x64.png."
+        },
+        {
+          "path": "frontend/src/hooks/useDocumentMeta.ts",
+          "operation": "create",
+          "description": "Add a small hook to set document.title (and, if applicable in this codebase, meta description) for creator flow and gift pages, switching to “For [Partner Name]” only after successful unlock."
+        },
+        {
+          "path": "frontend/src/pages/GiftCreatorPage.tsx",
+          "operation": "modify",
+          "description": "Set a creator-flow document title (English) using the shared document meta hook."
+        },
+        {
+          "path": "frontend/src/pages/GiftUnlockPage.tsx",
+          "operation": "modify",
+          "description": "Set a neutral pre-unlock document title, then update to include “For [Partner Name]” only after gift data is successfully unlocked/fetched; ensure pre-unlock render does not mount/render gift sections or trigger image loads."
+        },
+        {
+          "path": "frontend/src/components/gift/GiftPage.tsx",
+          "operation": "modify",
+          "description": "Ensure image rendering uses thumbnails initially and defers any higher-quality image usage until user interaction; avoid preloading full-size assets globally."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Add required decorative static romantic assets under frontend/public/assets/generated and render them directly in the UI (no backend routing).",
+      "acceptanceCriteria": [
+        "Generated images are added under frontend/public/assets/generated and referenced directly by the frontend.",
+        "At least a subtle background texture/pattern and a small icon/mark are used to enhance the premium romantic look without adding demo “content.”",
+        "These assets do not contain any names/messages and are purely decorative visuals."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/romantic-heart-pattern.dim_2048x2048.png",
+          "operation": "create",
+          "description": "Add the generated subtle seamless heart pattern background image asset at the exact path frontend/public/assets/generated/romantic-heart-pattern.dim_2048x2048.png."
+        },
+        {
+          "path": "frontend/public/assets/generated/heart-mark.dim_256x256.png",
+          "operation": "create",
+          "description": "Add the generated elegant minimal heart mark icon asset at the exact path frontend/public/assets/generated/heart-mark.dim_256x256.png."
+        },
+        {
+          "path": "frontend/public/assets/generated/favicon-heart.dim_64x64.png",
+          "operation": "create",
+          "description": "Add the generated favicon heart icon asset at the exact path frontend/public/assets/generated/favicon-heart.dim_64x64.png."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Render the decorative background pattern using frontend/public/assets/generated/romantic-heart-pattern.dim_2048x2048.png and incorporate the small heart mark frontend/public/assets/generated/heart-mark.dim_256x256.png as a subtle brand/detail element (purely decorative, no names/messages)."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Wire the favicon to frontend/public/assets/generated/favicon-heart.dim_64x64.png and ensure the default title/description remain neutral (no demo romantic names/messages)."
+        }
+      ]
+    }
+  ]
+}

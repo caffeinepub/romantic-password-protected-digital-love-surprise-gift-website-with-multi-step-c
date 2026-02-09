@@ -1,0 +1,210 @@
+{
+  "kind": "build_request",
+  "title": "Romantic password-protected digital love surprise gift website with multi-step creator flow and shareable private links",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement backend persistence for user-created “gift pages” in a single Motoko actor, including creation, retrieval, and password validation based on a special date in DDMMYYYY format, and returning only the minimum data needed to render the gift page.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "The website must start with a password-protected entry screen where the password is a special date (DDMMYYYY format).",
+          "Step 6: Generate a unique private shareable link",
+          "– No pre-filled demo content – All content must be user-generated"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A gift page record can be created with: partner name, sender name, email, special date (DDMMYYYY), banner image reference, multiple photos (each with its own note), love message, ending message, quiz items, and hidden/surprise messages.",
+        "Backend returns a unique, non-guessable gift identifier suitable for use in a shareable link (e.g., a random ID, not an incrementing counter).",
+        "Backend provides a method to verify a submitted password (DDMMYYYY) for a given giftId; gift content is not returned unless the password is correct.",
+        "Backend provides a method to fetch gift content for rendering after successful password verification (can be combined with verification).",
+        "No demo/sample/default content is stored or returned by the backend for any new gift."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create a multi-step, mobile-first “Gift Creator” flow in the frontend that collects all user-generated content with smooth transitions between steps: (1) partner name, sender name, email, special date (DDMMYYYY), (2) upload banner image + upload multiple photos and enter a personal note for each photo, (3) write the love message, (4) write the ending message, (5) live preview of the final gift page, (6) generate a unique private shareable link.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Creation flow: – Multi-step form to create the gift – Step 1: Partner name, sender name, email, special date (used as password) – Step 2: Upload banner image and multiple photos (with note input for each photo) – Step 3: Write love message – Step 4: Write website ending message – Step 5: Live preview of the final gift page – Step 6: Generate a unique private shareable link",
+          "– Smooth transitions between steps",
+          "– No pre-filled demo content – All content must be user-generated"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All form steps are accessible in a clear stepper-like flow and animate smoothly between steps (fade/slide).",
+        "Special date input is validated client-side to exactly 8 digits (DDMMYYYY) and shows an English validation error if invalid.",
+        "Banner image upload accepts an image file and shows a preview.",
+        "Multiple photo uploads are supported; each uploaded photo remains a separate item with its own note input bound to that specific photo.",
+        "Live preview renders using only the content the user has entered; if a field is empty, it is simply absent/blank (no placeholder romance text or demo imagery).",
+        "Final step calls the backend to create the gift and returns a shareable link that the user can copy."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Store uploaded images in the frontend as user-provided assets (no demo images) and ensure fast loading by generating and using appropriately sized previews/thumbnails for the gallery while keeping originals available for high-quality viewing.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Photo gallery section with multiple uploaded images",
+          "– Fast loading"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Gallery displays optimized thumbnails/previews (generated client-side) to keep initial load fast.",
+        "Clicking a photo uses an available higher-quality source (original or larger preview) without blocking the entire page render.",
+        "No stock/demo images appear anywhere unless the creator uploads them."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement the shareable gift experience route in the frontend (e.g., /gift/:giftId) that starts with a password entry screen; on correct password, transition smoothly into the main gift page with soft romantic animations; on incorrect password, show a clear English error and allow retry.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "The website must start with a password-protected entry screen where the password is a special date (DDMMYYYY format). After correct password, smoothly open the main page with soft romantic animation.",
+          "Step 6: Generate a unique private shareable link"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Visiting the shareable link shows a password entry screen first (gift content is not visible behind it).",
+        "Password must be entered in DDMMYYYY format; incorrect attempts show an error message and do not reveal gift data.",
+        "After successful entry, the app transitions into the gift page with a smooth fade/slide/romantic animation sequence.",
+        "Refreshing the page returns to the password entry screen unless the user re-enters the password (no password stored in URL)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Build the main gift page sections and interactions using the creator’s content: hero banner with animated “For [Partner Name]” and “From [Sender Name]” text, flip-photo gallery (3D flip on click, back shows note), love letter section with typing or fade-in animation, memory/quiz section with creator-defined relationship questions, surprise/hidden messages that reveal on click, final romantic message section with floating hearts animation, and an ending last-screen message with soft fade-out and floating hearts.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Main website sections: Hero section... Photo gallery... flips with a smooth 3D animation... Love letter section... Memory / quiz section... Surprise notes or hidden messages... Final romantic message section with hearts animation... Website ending section... last screen with soft fade-out animation and floating hearts"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Hero section displays the uploaded banner image and animates the “For [Partner Name]” and “From [Sender Name]” text in a romantic, premium style.",
+        "Photo gallery shows each uploaded photo as its own card; clicking/tapping triggers a smooth 3D flip animation; the back side shows that photo’s personal note.",
+        "Love letter section animates the long message (typing effect or staged fade-in) without layout jank on mobile.",
+        "Memory/quiz section renders creator-defined questions (and, if provided, answers) with a “reveal” interaction suitable for a surprise gift.",
+        "Surprise/hidden messages are hidden by default and reveal individually on click/tap.",
+        "Final section includes a floating hearts animation; ending message appears as the last screen with a soft fade-out transition and floating hearts overlay/background."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Add creator inputs for the “Memory / quiz” content and for “Surprise notes / hidden messages” as part of the creation flow, ensuring all displayed quiz questions and hidden messages are user-generated (no pre-filled questions).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Memory / quiz section with cute questions about the relationship",
+          "Surprise notes or hidden messages that reveal on click",
+          "– No pre-filled demo content – All content must be user-generated"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Creator can add/edit/remove multiple quiz items (at minimum: question text; optionally: answer text).",
+        "Creator can add/edit/remove multiple hidden/surprise messages.",
+        "Gift preview and final gift page display exactly the creator-entered quiz items and hidden messages; none are pre-populated."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Apply a consistent, modern romantic visual theme across the entire app: soft pink/red/white palette, premium spacing, elegant cursive paired with a modern readable font, and smooth fade/slide/heart-float animations; ensure the UI is mobile-first responsive and uses modern UI components.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Design style: – Clean, premium, emotional, romantic – Soft pink, red, white color palette – Elegant cursive + modern fonts – Smooth fade, slide, heart-float animations – Mobile-first responsive design",
+          "Technical requirements: – Modern UI components"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App uses a coherent romantic theme (colors, typography, component styling) consistently across creator flow, password entry, and gift page.",
+        "Animations are smooth on mobile and do not block interactions (e.g., reduced motion preference is respected if available).",
+        "Layouts adapt cleanly to small screens first, then scale up for tablet/desktop.",
+        "No blue/purple-dominant theme is introduced (palette remains pink/red/white as requested)."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Make the frontend SEO-friendly and fast-loading within the constraints of a React SPA by setting appropriate document titles/descriptions for the creator flow and for gift pages (based on partner/sender names), and by minimizing unnecessary asset loading before password unlock.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "– SEO friendly",
+          "– Fast loading"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Creator flow has a sensible English document title (e.g., “Create Your Surprise Gift”).",
+        "Gift page sets an English document title that includes “For [Partner Name]” after unlock (or a neutral title before unlock).",
+        "Gift content/images are not eagerly rendered/downloaded at full size before successful password entry (to keep entry fast and reduce accidental exposure)."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Generate and include required static romantic visual assets (used purely for visuals) in frontend/public/assets/generated and render them in the UI (e.g., subtle background pattern, decorative hearts, favicon) without routing these assets through the backend.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Clean, premium, emotional, romantic",
+          "Smooth fade, slide, heart-float animations"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images are added under frontend/public/assets/generated and referenced directly by the frontend.",
+        "At least a subtle background texture/pattern and a small icon/mark are used to enhance the premium romantic look without adding demo “content.”",
+        "These assets do not contain any names/messages and are purely decorative visuals."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (no multi-canister architecture).",
+    "Do not edit files under frontend immutablePaths; compose UI using existing components instead.",
+    "No external databases or third-party services (including email delivery) are used.",
+    "No pre-filled demo content: all names, messages, photos, quiz questions, and hidden messages shown on a gift page must come from creator input."
+  ],
+  "nonGoals": [
+    "Sending emails to the provided email address.",
+    "Third-party authentication providers (only Internet Identity would be allowed, but is not required by the request).",
+    "Real-time chat, push notifications, or social media integrations.",
+    "Using external image hosting/CDNs outside of what the app can store/provide itself."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Subtle seamless heart pattern background (romantic-heart-pattern.dim_2048x2048.png)",
+      "Elegant minimal heart mark icon (heart-mark.dim_256x256.png)",
+      "Favicon heart icon (favicon-heart.dim_64x64.png)"
+    ],
+    "edits": []
+  }
+}

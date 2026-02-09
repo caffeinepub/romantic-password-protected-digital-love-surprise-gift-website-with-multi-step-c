@@ -1,0 +1,188 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-multi-step-mobile-first-gift-creator-flow-in-the-frontend-that-collects-all-user-generated-content-with-smooth-transitions-between-steps-1-partner-name-sender-name-email-special-date-ddmmyyyy-2-upload-banner-image-upload-multiple-photos-and-enter-a-personal-note-for-each-photo-3-write-the-love-message-4-write-the-ending-message-5-live-preview-of-the-final-gift-page-6-generate-a-unique-private-shareable-link",
+      "featureTitle": "Create a multi-step, mobile-first “Gift Creator” flow in the frontend that collects all user-generated content with smooth transitions between steps: (1) partner name, sender name, email, special date (DDMMYYYY), (2) upload banner image + upload multiple photos and enter a personal note for each photo, (3) write the love message, (4) write the ending message, (5) live preview of the final gift page, (6) generate a unique private shareable link.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/gift-creator/GiftCreatorWizard.tsx",
+        "frontend/src/components/gift-creator/steps/Step1Basics.tsx",
+        "frontend/src/components/gift-creator/steps/Step2Images.tsx",
+        "frontend/src/pages/GiftCreatorPage.tsx",
+        "frontend/src/utils/clipboard.ts",
+        "frontend/src/utils/validation.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-store-uploaded-images-in-the-frontend-as-user-provided-assets-no-demo-images-and-ensure-fast-loading-by-generating-and-using-appropriately-sized-previews-thumbnails-for-the-gallery-while-keeping-originals-available-for-high-quality-viewing",
+      "featureTitle": "Store uploaded images in the frontend as user-provided assets (no demo images) and ensure fast loading by generating and using appropriately sized previews/thumbnails for the gallery while keeping originals available for high-quality viewing.",
+      "files": [
+        "frontend/src/components/gift-creator/steps/Step2Images.tsx",
+        "frontend/src/components/gift/GiftPage.tsx",
+        "frontend/src/components/gift/PhotoFlipGallery.tsx",
+        "frontend/src/utils/imageProcessing.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-the-shareable-gift-experience-route-in-the-frontend-e-g-gift-giftid-that-starts-with-a-password-entry-screen-on-correct-password-transition-smoothly-into-the-main-gift-page-with-soft-romantic-animations-on-incorrect-password-show-a-clear-english-error-and-allow-retry",
+      "featureTitle": "Implement the shareable gift experience route in the frontend (e.g., /gift/:giftId) that starts with a password entry screen; on correct password, transition smoothly into the main gift page with soft romantic animations; on incorrect password, show a clear English error and allow retry.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/gift/PasswordGate.tsx",
+        "frontend/src/pages/GiftUnlockPage.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-the-main-gift-page-sections-and-interactions-using-the-creator-s-content-hero-banner-with-animated-for-partner-name-and-from-sender-name-text-flip-photo-gallery-3d-flip-on-click-back-shows-note-love-letter-section-with-typing-or-fade-in-animation-memory-quiz-section-with-creator-defined-relationship-questions-surprise-hidden-messages-that-reveal-on-click-final-romantic-message-section-with-floating-hearts-animation-and-an-ending-last-screen-message-with-soft-fade-out-and-floating-hearts",
+      "featureTitle": "Build the main gift page sections and interactions using the creator’s content: hero banner with animated “For [Partner Name]” and “From [Sender Name]” text, flip-photo gallery (3D flip on click, back shows note), love letter section with typing or fade-in animation, memory/quiz section with creator-defined relationship questions, surprise/hidden messages that reveal on click, final romantic message section with floating hearts animation, and an ending last-screen message with soft fade-out and floating hearts.",
+      "files": [
+        "frontend/src/components/gift/EndingScreen.tsx",
+        "frontend/src/components/gift/FloatingHearts.tsx",
+        "frontend/src/components/gift/GiftPage.tsx",
+        "frontend/src/components/gift/HeroBanner.tsx",
+        "frontend/src/components/gift/HiddenMessages.tsx",
+        "frontend/src/components/gift/LoveLetter.tsx",
+        "frontend/src/components/gift/MemoryQuiz.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-creator-inputs-for-the-memory-quiz-content-and-for-surprise-notes-hidden-messages-as-part-of-the-creation-flow-ensuring-all-displayed-quiz-questions-and-hidden-messages-are-user-generated-no-pre-filled-questions",
+      "featureTitle": "Add creator inputs for the “Memory / quiz” content and for “Surprise notes / hidden messages” as part of the creation flow, ensuring all displayed quiz questions and hidden messages are user-generated (no pre-filled questions).",
+      "files": [
+        "frontend/src/components/gift-creator/HiddenMessagesEditor.tsx",
+        "frontend/src/components/gift-creator/QuizEditor.tsx",
+        "frontend/src/components/gift/GiftPage.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-consistent-modern-romantic-visual-theme-across-the-entire-app-soft-pink-red-white-palette-premium-spacing-elegant-cursive-paired-with-a-modern-readable-font-and-smooth-fade-slide-heart-float-animations-ensure-the-ui-is-mobile-first-responsive-and-uses-modern-ui-components",
+      "featureTitle": "Apply a consistent, modern romantic visual theme across the entire app: soft pink/red/white palette, premium spacing, elegant cursive paired with a modern readable font, and smooth fade/slide/heart-float animations; ensure the UI is mobile-first responsive and uses modern UI components.",
+      "files": [
+        "frontend/src/components/gift/PasswordGate.tsx",
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/GiftCreatorPage.tsx",
+        "frontend/src/pages/GiftUnlockPage.tsx",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-make-the-frontend-seo-friendly-and-fast-loading-within-the-constraints-of-a-react-spa-by-setting-appropriate-document-titles-descriptions-for-the-creator-flow-and-for-gift-pages-based-on-partner-sender-names-and-by-minimizing-unnecessary-asset-loading-before-password-unlock",
+      "featureTitle": "Make the frontend SEO-friendly and fast-loading within the constraints of a React SPA by setting appropriate document titles/descriptions for the creator flow and for gift pages (based on partner/sender names), and by minimizing unnecessary asset loading before password unlock.",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/components/gift/GiftPage.tsx",
+        "frontend/src/hooks/useDocumentMeta.ts",
+        "frontend/src/pages/GiftCreatorPage.tsx",
+        "frontend/src/pages/GiftUnlockPage.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-generate-and-include-required-static-romantic-visual-assets-used-purely-for-visuals-in-frontend-public-assets-generated-and-render-them-in-the-ui-e-g-subtle-background-pattern-decorative-hearts-favicon-without-routing-these-assets-through-the-backend",
+      "featureTitle": "Generate and include required static romantic visual assets (used purely for visuals) in frontend/public/assets/generated and render them in the UI (e.g., subtle background pattern, decorative hearts, favicon) without routing these assets through the backend.",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/components/layout/AppLayout.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
